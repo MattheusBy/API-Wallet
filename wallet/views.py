@@ -7,15 +7,15 @@ from wallet.models import UserBalance, Transaction
 from wallet.serializer import UserBalanceSerializer, TransactionSerializer
 
 
-# Create your views here.
-class ActivateUser(GenericAPIView):
 
+class ActivateUser(GenericAPIView):
+    """
+    APIView for activate user after register
+    """
     def get(self, request, uid, token, format=None):
         payload = {'uid': uid, 'token': token}
-
         url = "http://localhost:8000/auth/users/activation/"
         response = requests.post(url, data=payload)
-
         if response.status_code == 204:
             return Response({}, response.status_code)
         else:
@@ -27,6 +27,7 @@ class UserBalanceAPIView(generics.CreateAPIView,
     """
     Allows the user to set the balance,
     to get information the current balance and update it
+    manualy
     """
     queryset = UserBalance.objects.all()
     serializer_class = UserBalanceSerializer
@@ -62,6 +63,9 @@ class UserBalanceAPIView(generics.CreateAPIView,
 
 
 class TransactionViewSet(viewsets.ViewSet):
+    """
+    ViewSet to operate with transactions
+    """
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
 

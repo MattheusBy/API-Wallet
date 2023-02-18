@@ -13,7 +13,7 @@ def mass_send_mail():
     of transaction for yesterday
     :return: bash string-message
     """
-    recipients = []  # list for stores all register users email
+      # list for stores all register users email
     yesterday = datetime.now() - timedelta(days=1)
     # yesterday in format DateTime
     for user in User.objects.all():
@@ -56,8 +56,8 @@ def mass_send_mail():
             message = "За {0} произведено {1} операций, из которых " \
                       "{2} операции расхода; " \
                       "{3} операции дохода. " \
-                      "Сумма расходов: {4}. " \
-                      "Сумма доходов: {5}".format(
+                      "Сумма расходов: {4} BYN. " \
+                      "Сумма доходов: {5} BYN".format(
                                 yesterday.date(),
                                 len(transactions),
                                 ex_count,
@@ -70,6 +70,6 @@ def mass_send_mail():
         send_mail(subject,
                   message,
                   from_email,
-                  recipients,
+                  user.email,
                   fail_silently=False)
     return "sending emails"
