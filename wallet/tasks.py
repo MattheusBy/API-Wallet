@@ -17,7 +17,6 @@ def mass_send_mail():
     yesterday = datetime.now() - timedelta(days=1)
     # yesterday in format DateTime
     for user in User.objects.all():
-        recipients.append(user.email)  # add user's mail to list
         query_transaction = Transaction.objects.filter(
             user=user.id, date=yesterday.date()).values()
         # queryset conatains for each user his transactions for yesterday
