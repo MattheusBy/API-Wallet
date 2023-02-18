@@ -1,6 +1,5 @@
 import requests
-from rest_framework import generics, mixins, viewsets
-from rest_framework.decorators import api_view, action
+from rest_framework import generics, viewsets
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 
@@ -37,14 +36,18 @@ class UserBalanceAPIView(generics.CreateAPIView,
         balance = UserBalance.objects.get(
             user=self.request.user)
         self.serializer = UserBalanceSerializer(balance)
-        return Response({"Ваш текущий баланс составляет": self.serializer.data['balance']})
+        return Response(
+            {"Ваш текущий баланс составляет": self.serializer.data['balance']}
+        )
 
     def post(self, request, *args, **kwargs):
         # to set balance after register
         balance = UserBalance.objects.create(
             user=self.request.user, balance=self.request.data['balance'])
         self.serializer = UserBalanceSerializer(balance)
-        return Response({"Ваш баланс составляет": self.serializer.data['balance']})
+        return Response(
+            {"Ваш баланс составляет": self.serializer.data['balance']}
+            )
 
     def put(self, request, *args, **kwargs):
         # to update balance at any point in time
@@ -53,7 +56,9 @@ class UserBalanceAPIView(generics.CreateAPIView,
         current_balance.balance = self.request.data['balance']
         current_balance.save()
         self.serializer = UserBalanceSerializer(current_balance)
-        return Response({"Ваш баланс обновлен и составляет": self.serializer.data['balance']})
+        return Response({"Ваш баланс обновлен и составляет":
+                        self.serializer.data['balance']}
+                        )
 
 
 class TransactionViewSet(viewsets.ViewSet):
@@ -90,7 +95,8 @@ class TransactionViewSet(viewsets.ViewSet):
         return Response(self.serializer.data)
 
     def update(self, request, pk=None):
-        self.queryset_update = Transaction.objects.filter(user=request.user, pk=pk).update(
+        self.queryset_update = Transaction.objects.filter(
+            user=request.user, pk=pk).update(
             description=self.request.data['description'],
             category=self.request.data['category'],
             amount=self.request.data['amount'],
@@ -102,5 +108,6 @@ class TransactionViewSet(viewsets.ViewSet):
         return Response(self.serializer.data)
 
     def destroy(self, request, pk=None):
-        self.queryset = Transaction.objects.filter(user=request.user, pk=pk).delete()
+        self.queryset = Transaction.objects.filter(
+            user=request.user, pk=pk).delete()
         return Response('Запись {0} удалена'.format(self.request.data))

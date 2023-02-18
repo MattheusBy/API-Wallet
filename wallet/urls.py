@@ -1,7 +1,5 @@
 from django.urls import path
 from rest_framework import routers
-
-from wallet import views
 from wallet.views import UserBalanceAPIView, TransactionViewSet
 
 router = routers.SimpleRouter()
