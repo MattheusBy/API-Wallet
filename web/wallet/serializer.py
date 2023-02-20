@@ -9,7 +9,7 @@ class UserBalanceSerializer(serializers.Serializer):
 class TransactionSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     description = serializers.CharField(max_length=36)
-    datetime = serializers.DateTimeField()
+    date = serializers.DateField()
     category = serializers.CharField(max_length=24)
     amount = serializers.FloatField()
     user = serializers.CharField()
