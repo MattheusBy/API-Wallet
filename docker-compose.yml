@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  nginx:
+    container_name: nginx-wallet
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - web
+  db:
+    container_name: postgres-wallet
+    restart: always
+    image: postgres
+    environment:
+      - POSTGRES_USER=drf_wallet
+      - POSTGRES_PASSWORD=1234drf
+      - POSTGRES_DB=drf_wallet
+      - POSTGRES_PORT=5433
+      - POSTGRES_HOST=db
+    ports:
+      - 5433:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: [ "CMD", "echo", "1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  web:
+    container_name: app_wallet
+    restart: always
+    build: ./web
+    ports:
+      - 8000:80
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+    volumes:
+      - app:/usr/src/app
+      - static:/usr/src/app/static
+    entrypoint: bash -c "poetry run python manage.py makemigrations &&
+                    poetry run python manage.py migrate &&
+                    poetry run gunicorn drf_wallet.wsgi:application --bind 0.0.0.0:8000 &&
+                    poetry run celery -A drf_wallet worker -l INFO"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "echo", "healthcheck" ]
+      interval: 100s
+      timeout: 5s
+      retries: 2
+
+  redis:
+    container_name: redis-wallet
+    image: redis:alpine
+  celery:
+    container_name: celery-wallet
+    build: ./web
+    volumes:
+      - app:/usr/src/app
+    entrypoint: bash -c "poetry run celery -A drf_wallet worker -l INFO"
+  celery-beat:
+    container_name: celery_beat-wallet
+    build: ./web
+    volumes:
+      - app:/usr/src/app
+    entrypoint: bash -c "poetry run celery -A drf_wallet worker -l INFO"
+volumes:
+  app:
+  static:
+  web-static:
+  postgres_data:
