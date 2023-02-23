@@ -6,11 +6,13 @@ This is a small API-application for controlling income and expenses.
 
 Matsvey Malchanau
 
+Website: [matsveymalchanau.info](http://matsveymalchanau.info/)
+
 Email: matsvey.malchanau.python@gmail.com
 
-LinkedIn: www.linkedin.com/in/matsvey-malchanau
+LinkedIn: [Matsvey Malchanau](https://www.linkedin.com/in/matsvey-malchanau/)
 
-Github: github.com/MattheusBy
+Github: [MattheusBy](https://github.com/MattheusBy)
 
 ## Description
 
