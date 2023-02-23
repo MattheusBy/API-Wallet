@@ -84,9 +84,9 @@ WSGI_APPLICATION = 'drf_wallet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '1234567890',
+        'NAME': 'drf_wallet',
+        'USER': 'drf_wallet',
+        'PASSWORD': '1234drf',
         'HOST': 'db',
         'PORT': '5432',
     }
