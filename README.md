@@ -27,5 +27,5 @@ After that visit:
 
 http//:0.0.0.0:80/     API-aplication 
 
-http//:0.0.0.0:8082/    SwaggerUI
+http//:0.0.0.0:8082/ui/    SwaggerUI
 
