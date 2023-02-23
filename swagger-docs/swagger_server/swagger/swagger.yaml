@@ -1,0 +1,658 @@
+openapi: 3.0.0
+info:
+  title: API-Wallet
+  description: This is simple API application for control money.
+  contact:
+    name: Matsvey Malchanau
+    url: http://matsveymalchanau.info/
+    email: matsvey.malchanau.python@gmail.com
+  version: 1.0.0
+servers:
+- url: https://localhost:80/
+  description: Available only localhost
+paths:
+  /auth/users:
+    get:
+      tags:
+      - Auth
+      description: return all users. Allows admin only
+      operationId: auth_users_get
+      responses:
+        "201":
+          description: new user have been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+    post:
+      tags:
+      - Auth
+      description: create new user
+      operationId: auth_users_post
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/auth_users_body'
+        required: true
+      responses:
+        "201":
+          description: new user have been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_201'
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+  /auth/users/activation:
+    post:
+      tags:
+      - Auth
+      description: activate new user. Realize in frontend (Djoser docs https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create)
+      operationId: auth_users_activation_post
+      requestBody:
+        description: contains user's id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_activation_body'
+        required: true
+      responses:
+        "204":
+          description: No content
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+  /auth/users/resend_activation:
+    post:
+      tags:
+      - Auth
+      description: resend to user email link to activate account
+      operationId: auth_users_resend_activation_post
+      requestBody:
+        description: contains user's id
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_resend_activation_body'
+        required: true
+      responses:
+        "204":
+          description: NO_CONTENT
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_400'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+  /auth/users/me:
+    get:
+      tags:
+      - Auth
+      description: return information about current user
+      operationId: auth_users_me_get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+    put:
+      tags:
+      - Auth
+      description: update user's email and others required fields
+      operationId: auth_users_me_put
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_me_body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+    delete:
+      tags:
+      - Auth
+      description: delete current user
+      operationId: auth_users_me_delete
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_me_body_1'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "204":
+          description: NO_CONTENT
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+    patch:
+      tags:
+      - Auth
+      description: update user's email or other required fields
+      operationId: auth_users_me_patch
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_me_body_2'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+  /auth/users/set_password:
+    post:
+      tags:
+      - Auth
+      description: set new user's password
+      operationId: auth_users_set_password_post
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_set_password_body'
+        required: true
+      responses:
+        "204":
+          description: NO_CONTENT
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users_set_password_body'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+  /auth/users/reset_password:
+    post:
+      tags:
+      - Auth
+      description: reset user's password
+      operationId: auth_users_reset_password_post
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users_reset_password_body'
+        required: true
+      responses:
+        "204":
+          description: NO_CONTENT
+        "400":
+          description: BAD_REQUEST
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/users_reset_password_body'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.auth_controller
+  /auth/jwt/create:
+    post:
+      tags:
+      - JWT
+      description: create JWT-Token for user
+      operationId: auth_jwt_create_post
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/jwt_create_body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+      x-openapi-router-controller: swagger_server.controllers.jwt_controller
+  /auth/jwt/verify:
+    post:
+      tags:
+      - JWT
+      description: verify JWT-Token for user
+      operationId: auth_jwt_verify_post
+      requestBody:
+        description: contains user's data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/jwt_verify_body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_1'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.jwt_controller
+  /API/v1/balance:
+    get:
+      tags:
+      - Wallet application
+      description: return information about user's balance
+      operationId: a_piv1_balance_get
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_2'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.wallet_application_controller
+    put:
+      tags:
+      - Wallet application
+      description: change current user's balance
+      operationId: a_piv1_balance_put
+      requestBody:
+        description: contains new user's balance
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_balance_body'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1_balance_body'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.wallet_application_controller
+    post:
+      tags:
+      - Wallet application
+      description: set balance after register
+      operationId: a_piv1_balance_post
+      requestBody:
+        description: contains user's balance
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_balance_body_1'
+        required: true
+      responses:
+        "200":
+          description: "OK. \"Ваш баланс составляет:{user_balance}\""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v1_balance_body_1'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.wallet_application_controller
+  /API/v1/transactions:
+    post:
+      tags:
+      - Wallet application
+      description: create new user's entry
+      operationId: a_piv1_transactions_post
+      requestBody:
+        description: "should contains category, description, kind, amount"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/v1_transactions_body'
+        required: true
+      responses:
+        "200":
+          description: OK. Return JSON new entry
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+        "500":
+          description: 500 Internal Server Error. Missed required field
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.wallet_application_controller
+  /API/v1/transactions/{transaction_id}:
+    get:
+      tags:
+      - Wallet application
+      description: return information about user's balance
+      operationId: a_piv1_transactions_transaction_id_get
+      parameters:
+      - name: transaction_id
+        in: path
+        description: Transaction ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK. Return JSON transaction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+        "500":
+          description: 500 Internal Server Error. Missed required field
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.wallet_application_controller
+    put:
+      tags:
+      - Wallet application
+      description: return information about user's balance
+      operationId: a_piv1_transactions_transaction_id_put
+      parameters:
+      - name: transaction_id
+        in: path
+        description: Transaction ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK. Return JSON transaction data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+        "401":
+          description: 401 UNAUTHORIZED. Authentication credentials were not provided
+        "500":
+          description: 500 Internal Server Error. Missed required field
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.wallet_application_controller
+    delete:
+      tags:
+      - Wallet application
+      description: return information about user's balance
+      operationId: a_piv1_transactions_transaction_id_delete
+      parameters:
+      - name: transaction_id
+        in: path
+        description: Transaction ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: "OK. Return \"Запись {JSON transaction data} удалена\""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200_3'
+      security:
+      - bearerAuth: []
+      x-openapi-router-controller: swagger_server.controllers.wallet_application_controller
+components:
+  schemas:
+    users_resend_activation_body:
+      type: object
+      properties:
+        uid:
+          type: integer
+    jwt_verify_body:
+      type: object
+      properties:
+        token:
+          type: string
+    users_me_body_2:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    users_me_body:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    users_me_body_1:
+      type: object
+      properties:
+        current_password:
+          type: string
+    jwt_create_body:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    v1_balance_body_1:
+      type: object
+      properties:
+        balance:
+          type: integer
+      example:
+        balance: 0
+    v1_transactions_body:
+      type: object
+      properties:
+        category:
+          type: string
+        description:
+          type: string
+        amount:
+          type: integer
+        kind:
+          type: string
+    auth_users_body:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    users_reset_password_body:
+      type: object
+      properties:
+        email:
+          type: string
+    inline_response_201:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+      example:
+        id: 0
+        username: username
+    users_activation_body:
+      type: object
+      properties:
+        uid:
+          type: integer
+    inline_response_200_1:
+      type: object
+      properties:
+        access:
+          type: string
+        refresh:
+          type: string
+      example:
+        access: access
+        refresh: refresh
+    inline_response_200:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+      example:
+        id: 0
+        email: email
+        username: username
+    inline_response_200_2:
+      type: object
+      properties:
+        balance:
+          type: integer
+      example:
+        balance: 0
+    inline_response_200_3:
+      type: object
+      properties:
+        id:
+          type: integer
+        category:
+          type: string
+        description:
+          type: string
+        amount:
+          type: integer
+        kind:
+          type: string
+        user:
+          type: string
+      example:
+        amount: 6
+        kind: kind
+        description: description
+        id: 0
+        category: category
+        user: user
+    v1_balance_body:
+      type: object
+      properties:
+        balance:
+          type: integer
+      example:
+        balance: 0
+    users_set_password_body:
+      type: object
+      properties:
+        new_password:
+          type: string
+        re_new_password:
+          type: string
+        current_password:
+          type: string
+    inline_response_400:
+      type: object
+      properties:
+        uid:
+          type: integer
+        token:
+          type: string
+  responses:
+    UnauthorizedError:
+      description: 401 UNAUTHORIZED. Authentication credentials were not provided
+    KeyError:
+      description: 500 Internal Server Error. Missed required field
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: swagger_server.controllers.authorization_controller.check_bearerAuth
+
