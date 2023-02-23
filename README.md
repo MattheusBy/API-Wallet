@@ -12,6 +12,10 @@ LinkedIn: www.linkedin.com/in/matsvey-malchanau
 
 Github: github.com/MattheusBy
 
+## Description
+
+More about project read [here](http://matsveymalchanau.info/apiwallet)
+
 ## Technologies
 
 DRF, PostgreSQL, Docker, Docker-Compose, Nginx, Swagger, Redis, Celery, Celery-beat, Djoser, JWT-authentication, Poetry
