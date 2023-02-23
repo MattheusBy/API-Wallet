@@ -12,6 +12,10 @@ LinkedIn: www.linkedin.com/in/matsvey-malchanau
 
 Github: github.com/MattheusBy
 
+## Technologies
+
+DRF, PostgreSQL, Docker, Docker-Compose, Nginx, Swagger, Redis, Celery, Celery-beat, Djoser, JWT-authentication, Poetry
+
 ## Usage
 ```bash
 git clone https://github.com/MattheusBy/API-Wallet.git
