@@ -31,7 +31,7 @@ docker-compose up
 ```
 After that visit:
 
-http//:0.0.0.0:80/     API-aplication 
+http//:0.0.0.0:80/     API-application 
 
 http//:0.0.0.0:8082/ui/    SwaggerUI
 
